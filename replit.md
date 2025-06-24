@@ -85,6 +85,13 @@ A full-stack web application for Glencity Resort, providing accommodation bookin
 
 ## Recent Changes
 
+- June 24, 2025: Integrated PostgreSQL database for persistent storage
+  - Replaced in-memory storage with PostgreSQL using Drizzle ORM
+  - Created database schema with accommodations, activities, bookings, and activity_bookings tables
+  - Implemented DatabaseStorage class with full CRUD operations
+  - Added automatic database seeding on startup
+  - All booking data now persists across application restarts
+
 - June 24, 2025: Restructured application with dedicated landing page
   - Created separate pages for accommodations and activities
   - Enhanced hero section with features showcase and call-to-action

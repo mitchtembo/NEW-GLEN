@@ -13,6 +13,8 @@ import {
   type InsertActivityBooking,
   type BookingWithDetails
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Accommodations
@@ -282,4 +284,148 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getAccommodations(): Promise<Accommodation[]> {
+    return await db.select().from(accommodations);
+  }
+
+  async getAccommodation(id: number): Promise<Accommodation | undefined> {
+    const [accommodation] = await db.select().from(accommodations).where(eq(accommodations.id, id));
+    return accommodation || undefined;
+  }
+
+  async createAccommodation(insertAccommodation: InsertAccommodation): Promise<Accommodation> {
+    const [accommodation] = await db
+      .insert(accommodations)
+      .values(insertAccommodation)
+      .returning();
+    return accommodation;
+  }
+
+  async getActivities(): Promise<Activity[]> {
+    return await db.select().from(activities);
+  }
+
+  async getActivity(id: number): Promise<Activity | undefined> {
+    const [activity] = await db.select().from(activities).where(eq(activities.id, id));
+    return activity || undefined;
+  }
+
+  async createActivity(insertActivity: InsertActivity): Promise<Activity> {
+    const [activity] = await db
+      .insert(activities)
+      .values(insertActivity)
+      .returning();
+    return activity;
+  }
+
+  async getBookings(): Promise<Booking[]> {
+    return await db.select().from(bookings);
+  }
+
+  async getBooking(id: number): Promise<BookingWithDetails | undefined> {
+    const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
+    if (!booking) return undefined;
+
+    const accommodation = await this.getAccommodation(booking.accommodationId);
+    if (!accommodation) return undefined;
+
+    const activityBookingsData = await db
+      .select({
+        id: activityBookings.id,
+        bookingId: activityBookings.bookingId,
+        activityId: activityBookings.activityId,
+        quantity: activityBookings.quantity,
+        scheduledDate: activityBookings.scheduledDate,
+        price: activityBookings.price,
+        activity: activities
+      })
+      .from(activityBookings)
+      .innerJoin(activities, eq(activityBookings.activityId, activities.id))
+      .where(eq(activityBookings.bookingId, id));
+
+    return {
+      ...booking,
+      accommodation,
+      activityBookings: activityBookingsData.map(ab => ({
+        id: ab.id,
+        bookingId: ab.bookingId,
+        activityId: ab.activityId,
+        quantity: ab.quantity,
+        scheduledDate: ab.scheduledDate,
+        price: ab.price,
+        activity: ab.activity
+      }))
+    };
+  }
+
+  async getBookingsByEmail(email: string): Promise<BookingWithDetails[]> {
+    const userBookings = await db.select().from(bookings).where(eq(bookings.guestEmail, email));
+    
+    const bookingsWithDetails: BookingWithDetails[] = [];
+    
+    for (const booking of userBookings) {
+      const details = await this.getBooking(booking.id);
+      if (details) {
+        bookingsWithDetails.push(details);
+      }
+    }
+
+    return bookingsWithDetails;
+  }
+
+  async createBooking(insertBooking: InsertBooking): Promise<BookingWithDetails> {
+    const { activities: bookingActivities, ...bookingData } = insertBooking;
+    
+    const [booking] = await db
+      .insert(bookings)
+      .values({
+        ...bookingData,
+        checkIn: new Date(bookingData.checkIn),
+        checkOut: new Date(bookingData.checkOut),
+      })
+      .returning();
+
+    // Create activity bookings if any
+    if (bookingActivities) {
+      for (const activityBooking of bookingActivities) {
+        const activity = await this.getActivity(activityBooking.activityId);
+        await db.insert(activityBookings).values({
+          bookingId: booking.id,
+          activityId: activityBooking.activityId,
+          quantity: activityBooking.quantity,
+          scheduledDate: activityBooking.scheduledDate ? new Date(activityBooking.scheduledDate) : null,
+          price: activity?.price || '0.00'
+        });
+      }
+    }
+
+    const result = await this.getBooking(booking.id);
+    if (!result) throw new Error('Failed to create booking');
+    return result;
+  }
+
+  async updateBooking(id: number, updateData: Partial<Booking>): Promise<Booking | undefined> {
+    const [updatedBooking] = await db
+      .update(bookings)
+      .set(updateData)
+      .where(eq(bookings.id, id))
+      .returning();
+    
+    return updatedBooking || undefined;
+  }
+
+  async createActivityBooking(insertActivityBooking: InsertActivityBooking): Promise<ActivityBooking> {
+    const [activityBooking] = await db
+      .insert(activityBookings)
+      .values(insertActivityBooking)
+      .returning();
+    return activityBooking;
+  }
+
+  async getActivityBookingsByBookingId(bookingId: number): Promise<ActivityBooking[]> {
+    return await db.select().from(activityBookings).where(eq(activityBookings.bookingId, bookingId));
+  }
+}
+
+export const storage = new DatabaseStorage();
