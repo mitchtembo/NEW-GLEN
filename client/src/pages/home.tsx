@@ -1,5 +1,6 @@
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
+import AccommodationsSection from "@/components/accommodations-section";
 import BookingModal from "@/components/booking-modal";
 import UserDashboard from "@/components/user-dashboard";
 import { useBookingStore } from "@/lib/booking-store";
@@ -11,6 +12,7 @@ export default function Home() {
     <div className="min-h-screen bg-warm-gray">
       <Navigation />
       <HeroSection />
+      <AccommodationsSection />
       
       {showBookingModal && <BookingModal />}
       {showUserDashboard && <UserDashboard />}
