@@ -4,16 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar, MapPin, Clock, DollarSign, Plus, Edit, Eye } from "lucide-react";
+import { Calendar, MapPin, Clock, DollarSign, Plus, Edit, Eye } from "lucide-react"; // Clock is not used
 import { useState } from "react";
 import { Link } from "wouter";
-import type { BookingWithDetails } from "@shared/schema";
+// import type { BookingWithDetails } from "@shared/schema"; // Removed
 
+// Using 'any[]' for bookings as it will be an empty array from the mocked API
+// and the component handles empty state.
 export default function Dashboard() {
   const [guestEmail, setGuestEmail] = useState("");
   
-  const { data: bookings, isLoading, error } = useQuery<BookingWithDetails[]>({
-    queryKey: ["/api/bookings", guestEmail],
+  const { data: bookings, isLoading, error } = useQuery<any[]>({ // Changed BookingWithDetails[] to any[]
+    queryKey: ["/api/bookings", guestEmail], // This will now return [] or null
     enabled: !!guestEmail,
   });
 

@@ -4,18 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Plus, Check } from "lucide-react";
 import { useBookingStore } from "@/lib/booking-store";
 import { useState } from "react";
-import type { Activity } from "@shared/schema";
+// import type { Activity } from "@shared/schema"; // Removed
+
+// Define a minimal Activity type here
+interface Activity {
+  id: number;
+  imageUrl: string;
+  name: string;
+  description: string;
+  price: number;
+  // category: string; // Not used in template, can be omitted or kept if needed by booking store
+}
 
 export default function ActivitiesSection() {
   const { data: activities, isLoading, error } = useQuery<Activity[]>({
-    queryKey: ["/api/activities"],
+    queryKey: ["/api/activities"], // Will return []
   });
 
   const { addActivity, selectedActivities } = useBookingStore();
   const [addedActivities, setAddedActivities] = useState<Set<number>>(new Set());
 
   const handleAddActivity = (activity: Activity) => {
-    addActivity(activity);
+    addActivity(activity as any); // Cast to any if local Activity type diverges from booking store expectation
     setAddedActivities(prev => new Set([...Array.from(prev), activity.id]));
     
     // Reset the visual feedback after 2 seconds

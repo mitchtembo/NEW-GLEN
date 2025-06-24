@@ -8,37 +8,31 @@ async function throwIfResNotOk(res: Response) {
 }
 
 export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined,
+  _method: string,
+  _url: string,
+  _data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
-
-  await throwIfResNotOk(res);
-  return res;
+  console.warn("API calls have been removed. Returning mock success.");
+  // Simulate a successful response with empty JSON
+  return Promise.resolve(new Response(JSON.stringify({}), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  }));
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
+  (_options) => // Options are no longer relevant
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    console.warn(`API call to ${queryKey[0]} removed. Returning empty array/null.`);
+    // Return an empty array for list-like resources, or null for single resources
+    // This is a generic mock, specific components might need more tailored static data.
+    if ((queryKey[0] as string).endsWith('s')) { // a simple heuristic for collections
+      return Promise.resolve([]);
     }
-
-    await throwIfResNotOk(res);
-    return await res.json();
+    return Promise.resolve(null);
   };
 
 export const queryClient = new QueryClient({
