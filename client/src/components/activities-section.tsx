@@ -16,7 +16,7 @@ export default function ActivitiesSection() {
 
   const handleAddActivity = (activity: Activity) => {
     addActivity(activity);
-    setAddedActivities(prev => new Set([...prev, activity.id]));
+    setAddedActivities(prev => new Set([...Array.from(prev), activity.id]));
     
     // Reset the visual feedback after 2 seconds
     setTimeout(() => {
