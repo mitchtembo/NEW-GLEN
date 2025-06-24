@@ -8,7 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { useBookingStore } from "@/lib/booking-store";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import type { InsertBooking } from "@shared/schema";
+// import type { InsertBooking } from "@shared/schema"; // Removed
+
+// Using 'any' for InsertBooking for now, as the actual backend submission is removed.
+// If specific structure is needed for other client logic, define it here.
+type InsertBooking = any;
 
 interface GuestInfo {
   firstName: string;

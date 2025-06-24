@@ -2,33 +2,31 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Wifi, ShowerHead, Flame, Car, Lock, UtensilsCrossed, Mountain } from "lucide-react";
+import { Users } from "lucide-react"; // Wifi, ShowerHead, Flame, Car, Lock, UtensilsCrossed, Mountain removed as amenities are removed
 import { useBookingStore } from "@/lib/booking-store";
-import type { Accommodation } from "@shared/schema";
+// import type { Accommodation } from "@shared/schema"; // Removed as @shared/schema is deleted
+
+// Define a minimal Accommodation type here if needed for structure, or use any.
+// For now, properties used in the template will be expected.
+interface Accommodation {
+  id: number;
+  imageUrl: string;
+  name: string;
+  type: string;
+  description: string;
+  maxGuests: number;
+  pricePerNight: number;
+  // amenities: string[]; // amenities removed for now
+}
 
 export default function AccommodationsSection() {
   const { data: accommodations, isLoading, error } = useQuery<Accommodation[]>({
-    queryKey: ["/api/accommodations"],
+    queryKey: ["/api/accommodations"], // This will now return [] due to queryClient changes
   });
 
   const { selectAccommodation } = useBookingStore();
 
-  const getAmenityIcon = (amenity: string) => {
-    const iconMap: { [key: string]: any } = {
-      'WiFi': Wifi,
-      'Private Bath': ShowerHead,
-      'Shared Bath': ShowerHead,
-      'Fireplace': Flame,
-      'Fire Pit': Flame,
-      'Parking': Car,
-      'Lockers': Lock,
-      'Kitchen': UtensilsCrossed,
-      'Mountain View': Mountain,
-    };
-    
-    const IconComponent = iconMap[amenity];
-    return IconComponent ? <IconComponent className="w-3 h-3 mr-1" /> : null;
-  };
+  // getAmenityIcon removed as amenities are no longer displayed
 
   const getBadgeColor = (type: string) => {
     switch (type) {
@@ -124,16 +122,9 @@ export default function AccommodationsSection() {
                   </div>
                   <div className="text-2xl font-bold text-forest">${accommodation.pricePerNight}/night</div>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {accommodation.amenities.map((amenity, index) => (
-                    <Badge key={index} variant="secondary" className="bg-gray-100 text-sm flex items-center">
-                      {getAmenityIcon(amenity)}
-                      {amenity}
-                    </Badge>
-                  ))}
-                </div>
+                {/* Amenities display removed */}
                 <Button 
-                  onClick={() => selectAccommodation(accommodation)}
+                  onClick={() => selectAccommodation(accommodation as any)} // Cast to any as amenities removed
                   className="w-full bg-forest text-white hover:bg-sage transition-colors font-semibold"
                 >
                   Book Now
