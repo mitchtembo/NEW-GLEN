@@ -11,7 +11,7 @@ export default function Activities() {
       <Navigation />
       
       {/* Page Header */}
-      <section className="py-16 bg-gradient-to-r from-forest to-sage text-white">
+      {/* <section className="py-16 bg-gradient-to-r from-forest to-sage text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Adventure Activities</h1>
           <p className="text-xl opacity-90 max-w-3xl mx-auto">
@@ -19,7 +19,7 @@ export default function Activities() {
             From adrenaline-pumping adventures to peaceful nature experiences.
           </p>
         </div>
-      </section>
+      </section> */}
 
       <ActivitiesSection />
       
