@@ -83,10 +83,19 @@ A full-stack web application for Glencity Resort, providing accommodation bookin
 - **CORS**: Configured for cross-origin requests
 - **Static Assets**: Vite handles asset optimization and caching
 
+## Recent Changes
+
+- June 24, 2025: Restructured application with dedicated landing page
+  - Created separate pages for accommodations and activities
+  - Enhanced hero section with features showcase and call-to-action
+  - Updated navigation to support multi-page structure
+  - Removed booking widget from accommodations page per user request
+  - Implemented proper landing page experience with booking widget on home
+
 ## Changelog
 
-Changelog:
-- June 22, 2025. Initial setup
+- June 22, 2025: Initial setup
+- June 24, 2025: Landing page restructure and multi-page navigation
 
 ## User Preferences
 

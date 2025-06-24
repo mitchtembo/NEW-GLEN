@@ -136,7 +136,7 @@ export default function AccommodationsSection() {
                   onClick={() => selectAccommodation(accommodation)}
                   className="w-full bg-forest text-white hover:bg-sage transition-colors font-semibold"
                 >
-                  Select {accommodation.type === 'chalet' ? 'Chalet' : accommodation.type === 'dorm' ? 'Dorm' : 'Camping'}
+                  Book Now
                 </Button>
               </CardContent>
             </Card>

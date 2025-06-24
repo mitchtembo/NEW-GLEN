@@ -1,21 +1,29 @@
 import Navigation from "@/components/navigation";
-import HeroSection from "@/components/hero-section";
-import AccommodationsSection from "@/components/accommodations-section";
+import ActivitiesSection from "@/components/activities-section";
 import BookingModal from "@/components/booking-modal";
-import UserDashboard from "@/components/user-dashboard";
 import { useBookingStore } from "@/lib/booking-store";
 
-export default function Home() {
-  const { showBookingModal, showUserDashboard } = useBookingStore();
+export default function Activities() {
+  const { showBookingModal } = useBookingStore();
 
   return (
     <div className="min-h-screen bg-warm-gray">
       <Navigation />
-      <HeroSection />
-      <AccommodationsSection />
+      
+      {/* Page Header */}
+      <section className="py-16 bg-gradient-to-r from-forest to-sage text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Adventure Activities</h1>
+          <p className="text-xl opacity-90 max-w-3xl mx-auto">
+            Experience the thrill of the outdoors with our exciting range of activities. 
+            From adrenaline-pumping adventures to peaceful nature experiences.
+          </p>
+        </div>
+      </section>
+
+      <ActivitiesSection />
       
       {showBookingModal && <BookingModal />}
-      {showUserDashboard && <UserDashboard />}
       
       <footer className="bg-forest text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,23 +44,17 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 text-gray-300">
-                <p><i className="fas fa-map-marker-alt mr-2"></i>123 Mountain View Rd, Glencity</p>
-                <p><i className="fas fa-phone mr-2"></i>+1 (555) 123-4567</p>
-                <p><i className="fas fa-envelope mr-2"></i>info@glencityresort.com</p>
+                <p>123 Mountain View Rd, Glencity</p>
+                <p>+1 (555) 123-4567</p>
+                <p>info@glencityresort.com</p>
               </div>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <i className="fab fa-facebook-f text-xl"></i>
-                </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <i className="fab fa-instagram text-xl"></i>
-                </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <i className="fab fa-twitter text-xl"></i>
-                </a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Facebook</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
               </div>
             </div>
           </div>

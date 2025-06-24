@@ -27,12 +27,16 @@ export default function Navigation() {
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#accommodations" className="text-gray-700 hover:text-forest transition-colors">
-              Accommodations
-            </a>
-            <a href="#activities" className="text-gray-700 hover:text-forest transition-colors">
-              Activities
-            </a>
+            <Link href="/accommodations">
+              <span className="text-gray-700 hover:text-forest transition-colors cursor-pointer">
+                Accommodations
+              </span>
+            </Link>
+            <Link href="/activities">
+              <span className="text-gray-700 hover:text-forest transition-colors cursor-pointer">
+                Activities
+              </span>
+            </Link>
             <a href="#about" className="text-gray-700 hover:text-forest transition-colors">
               About
             </a>
@@ -61,12 +65,16 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <div className="px-4 py-2 space-y-2">
-            <a href="#accommodations" className="block py-2 text-gray-700" onClick={() => setMobileMenuOpen(false)}>
-              Accommodations
-            </a>
-            <a href="#activities" className="block py-2 text-gray-700" onClick={() => setMobileMenuOpen(false)}>
-              Activities
-            </a>
+            <Link href="/accommodations">
+              <button className="block py-2 text-gray-700 w-full text-left" onClick={() => setMobileMenuOpen(false)}>
+                Accommodations
+              </button>
+            </Link>
+            <Link href="/activities">
+              <button className="block py-2 text-gray-700 w-full text-left" onClick={() => setMobileMenuOpen(false)}>
+                Activities
+              </button>
+            </Link>
             <a href="#about" className="block py-2 text-gray-700" onClick={() => setMobileMenuOpen(false)}>
               About
             </a>
