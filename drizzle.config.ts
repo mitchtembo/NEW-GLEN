@@ -1,14 +1,16 @@
 import { defineConfig } from "drizzle-kit";
+import path from "path";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL, ensure the database is provisioned");
-}
+// Use SQLite for local development by default
+const isSQLite = !process.env.DATABASE_URL || process.env.NODE_ENV !== 'production';
+const dataDir = path.join(process.cwd(), 'data');
+const sqliteDbPath = path.join(dataDir, 'glencity.db');
 
 export default defineConfig({
   out: "./migrations",
   schema: "./shared/schema.ts",
-  dialect: "postgresql",
-  dbCredentials: {
-    url: process.env.DATABASE_URL,
-  },
+  dialect: isSQLite ? "sqlite" : "postgresql",
+  dbCredentials: isSQLite 
+    ? { url: `file:${sqliteDbPath}` }
+    : { url: process.env.DATABASE_URL as string },
 });

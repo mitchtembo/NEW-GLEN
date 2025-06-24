@@ -1,54 +1,54 @@
-import { pgTable, text, serial, integer, timestamp, decimal, boolean, jsonb } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer, numeric, real } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Accommodations table
-export const accommodations = pgTable("accommodations", {
-  id: serial("id").primaryKey(),
+export const accommodations = sqliteTable("accommodations", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   type: text("type").notNull(), // 'chalet', 'dorm', 'camping'
   name: text("name").notNull(),
   description: text("description").notNull(),
-  pricePerNight: decimal("price_per_night", { precision: 10, scale: 2 }).notNull(),
+  pricePerNight: real("price_per_night").notNull(),
   maxGuests: integer("max_guests").notNull(),
-  amenities: jsonb("amenities").$type<string[]>().notNull().default([]),
+  amenities: text("amenities").notNull().default('[]'),
   imageUrl: text("image_url").notNull(),
-  available: boolean("available").notNull().default(true),
+  available: integer("available", { mode: 'boolean' }).notNull().default(true),
 });
 
 // Activities table
-export const activities = pgTable("activities", {
-  id: serial("id").primaryKey(),
+export const activities = sqliteTable("activities", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  price: real("price").notNull(),
   category: text("category").notNull(),
   imageUrl: text("image_url").notNull(),
-  available: boolean("available").notNull().default(true),
+  available: integer("available", { mode: 'boolean' }).notNull().default(true),
 });
 
 // Bookings table
-export const bookings = pgTable("bookings", {
-  id: serial("id").primaryKey(),
+export const bookings = sqliteTable("bookings", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   guestName: text("guest_name").notNull(),
   guestEmail: text("guest_email").notNull(),
   guestPhone: text("guest_phone").notNull(),
   accommodationId: integer("accommodation_id").notNull(),
-  checkIn: timestamp("check_in").notNull(),
-  checkOut: timestamp("check_out").notNull(),
+  checkIn: text("check_in").notNull(), // SQLite doesn't have timestamp type, so we use text
+  checkOut: text("check_out").notNull(),
   guests: integer("guests").notNull(),
-  totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+  totalPrice: real("total_price").notNull(),
   status: text("status").notNull().default('confirmed'), // 'confirmed', 'checked-in', 'checked-out', 'cancelled'
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: text("created_at").notNull().default(new Date().toISOString()),
 });
 
 // Activity bookings table
-export const activityBookings = pgTable("activity_bookings", {
-  id: serial("id").primaryKey(),
+export const activityBookings = sqliteTable("activity_bookings", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   bookingId: integer("booking_id").notNull(),
   activityId: integer("activity_id").notNull(),
   quantity: integer("quantity").notNull().default(1),
-  scheduledDate: timestamp("scheduled_date"),
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  scheduledDate: text("scheduled_date"),
+  price: real("price").notNull(),
 });
 
 // Schema exports

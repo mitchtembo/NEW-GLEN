@@ -286,12 +286,23 @@ export class MemStorage implements IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getAccommodations(): Promise<Accommodation[]> {
-    return await db.select().from(accommodations);
+    const results = await db.select().from(accommodations);
+    // Parse amenities from JSON string to array
+    return results.map(acc => ({
+      ...acc,
+      amenities: typeof acc.amenities === 'string' ? JSON.parse(acc.amenities as string) : acc.amenities
+    }));
   }
 
   async getAccommodation(id: number): Promise<Accommodation | undefined> {
     const [accommodation] = await db.select().from(accommodations).where(eq(accommodations.id, id));
-    return accommodation || undefined;
+    if (!accommodation) return undefined;
+    
+    // Parse amenities from JSON string to array
+    return {
+      ...accommodation,
+      amenities: typeof accommodation.amenities === 'string' ? JSON.parse(accommodation.amenities as string) : accommodation.amenities
+    };
   }
 
   async createAccommodation(insertAccommodation: InsertAccommodation): Promise<Accommodation> {

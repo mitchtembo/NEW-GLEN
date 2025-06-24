@@ -1,6 +1,5 @@
 import { db } from "./db";
 import { accommodations, activities } from "@shared/schema";
-import type { InsertAccommodation, InsertActivity } from "@shared/schema";
 
 async function seedDatabase() {
   console.log("🌱 Seeding database...");
@@ -12,15 +11,18 @@ async function seedDatabase() {
     return;
   }
 
+  // Helper function to stringify JSON for SQLite
+  const stringifyAmenities = (arr: string[]) => JSON.stringify(arr);
+
   // Seed accommodations
-  const seedAccommodations: InsertAccommodation[] = [
+  const seedAccommodations = [
     {
       type: 'chalet',
       name: 'Luxury Mountain Chalet',
       description: 'Spacious wooden chalets with full amenities, private bathrooms, and stunning mountain views.',
-      pricePerNight: '180.00',
+      pricePerNight: 180.00,
       maxGuests: 6,
-      amenities: ['WiFi', 'Private Bath', 'Fireplace', 'Kitchen', 'Mountain View'],
+      amenities: stringifyAmenities(['WiFi', 'Private Bath', 'Fireplace', 'Kitchen', 'Mountain View']),
       imageUrl: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500',
       available: true
     },
@@ -28,9 +30,9 @@ async function seedDatabase() {
       type: 'dorm',
       name: 'Shared Dormitory',
       description: 'Comfortable bunk beds in shared accommodations, perfect for solo travelers and groups.',
-      pricePerNight: '45.00',
+      pricePerNight: 45.00,
       maxGuests: 1,
-      amenities: ['WiFi', 'Shared Bath', 'Lockers', 'Common Area'],
+      amenities: stringifyAmenities(['WiFi', 'Shared Bath', 'Lockers', 'Common Area']),
       imageUrl: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500',
       available: true
     },
@@ -38,20 +40,20 @@ async function seedDatabase() {
       type: 'camping',
       name: 'Premium Camping Spot',
       description: 'Designated camping areas with fire pits and access to shared facilities for the true outdoor experience.',
-      pricePerNight: '25.00',
+      pricePerNight: 25.00,
       maxGuests: 4,
-      amenities: ['Fire Pit', 'Shared Facilities', 'Parking', 'Picnic Table'],
+      amenities: stringifyAmenities(['Fire Pit', 'Shared Facilities', 'Parking', 'Picnic Table']),
       imageUrl: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500',
       available: true
     }
   ];
 
   // Seed activities
-  const seedActivities: InsertActivity[] = [
+  const seedActivities = [
     {
       name: 'Horse Riding',
       description: 'Explore mountain trails on horseback with experienced guides.',
-      price: '75.00',
+      price: 75.00,
       category: 'adventure',
       imageUrl: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
@@ -59,7 +61,7 @@ async function seedDatabase() {
     {
       name: 'Quad Biking',
       description: 'Thrilling off-road adventures through forest trails.',
-      price: '90.00',
+      price: 90.00,
       category: 'adventure',
       imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
@@ -67,7 +69,7 @@ async function seedDatabase() {
     {
       name: 'Team Building',
       description: 'Professional facilitated team activities and challenges.',
-      price: '120.00',
+      price: 120.00,
       category: 'group',
       imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
@@ -75,7 +77,7 @@ async function seedDatabase() {
     {
       name: 'Guided Hiking',
       description: 'Discover hidden trails and scenic viewpoints with local guides.',
-      price: '45.00',
+      price: 45.00,
       category: 'nature',
       imageUrl: 'https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
@@ -83,7 +85,7 @@ async function seedDatabase() {
     {
       name: 'Lake Kayaking',
       description: 'Peaceful paddling on crystal clear mountain lakes.',
-      price: '55.00',
+      price: 55.00,
       category: 'water',
       imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
@@ -91,7 +93,7 @@ async function seedDatabase() {
     {
       name: 'Meal Package',
       description: 'Full-day dining with locally sourced ingredients.',
-      price: '35.00',
+      price: 35.00,
       category: 'dining',
       imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300',
       available: true
