@@ -151,28 +151,6 @@ export default function HeroSection() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-to-r from-forest to-sage text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready for Your Adventure?</h2>
-          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
-            Join thousands of happy guests who have discovered the magic of Glencity Resort. 
-            Book your stay today and create memories that will last a lifetime.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/accommodations">
-              <Button size="lg" className="bg-white text-forest hover:bg-gray-100 px-8 py-3">
-                Explore Accommodations
-              </Button>
-            </Link>
-            <Link href="/activities">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-forest px-8 py-3">
-                View Activities
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
