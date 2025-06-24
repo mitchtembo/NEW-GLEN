@@ -1,7 +1,7 @@
 # Glencity Resort - Resort Booking System
 
 ## Overview
-
+----------------------
 A full-stack web application for Glencity Resort, providing accommodation booking and activity management capabilities. The system features a React-based frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence and Drizzle ORM for database management.
 
 ## System Architecture
